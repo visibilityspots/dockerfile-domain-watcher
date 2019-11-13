@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# little script using whois to determine an array of given domains if it became available and alerts to telegram using ntfy
+
+for domain in $@; do
+    state=$(whois $domain | grep Status |  tr -d '\t' | tr ':' '\n' | tail -n +2 | sed "s/^ //")
+    if [ "$state" == "NOT AVAILABLE" ]; then
+        /usr/local/bin/ntfy -b telegram send "$domain is still not available"
+    else
+        /usr/local/bin/ntfy -b telegram send "$domain state is $state"
+    fi
+done

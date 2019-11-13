@@ -1,0 +1,11 @@
+package:
+  whois:
+    installed: true
+
+command:
+  ntfy --version:
+    exit-status: 0
+
+command:
+  whois --version:
+    exit-status: 0
