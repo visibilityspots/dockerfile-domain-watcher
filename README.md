@@ -1,7 +1,7 @@
-# Cloudflared
+# DomainWatcher
 
 [![Build Status](https://travis-ci.org/visibilityspots/dockerfile-domain-watcher.svg?branch=master)](https://travis-ci.org/visibilityspots/dockerfile-domain-watcher)
-[![](https://images.microbadger.com/badges/image/visibilityspots/domain-watcher:amd64.svg)](https://microbadger.com/images/visibilityspots/domain-watcher:amd64)
+[![](https://images.microbadger.com/badges/image/visibilityspots/domain-watcher.svg)](https://microbadger.com/images/visibilityspots/domain-watcher)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Docker Pulls](https://img.shields.io/docker/pulls/visibilityspots/domain-watcher.svg)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
 
