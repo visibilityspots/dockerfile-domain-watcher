@@ -9,3 +9,14 @@ command:
 command:
   whois --version:
     exit-status: 0
+
+user:
+  watcher:
+    exists: true
+    home: /home/watcher
+
+file:
+  /home/watcher/.config/ntfy/telegram.ini:
+    exists: true
+    owner: watcher
+    group: watcher

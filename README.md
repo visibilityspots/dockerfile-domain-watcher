@@ -9,35 +9,40 @@ a docker container which checks if a given domain is still available and sends a
 
 ## configuration
 
+fetch your telegram credentials from the config file created by ntfy [initialization](https://ntfy.readthedocs.io/en/latest/#telegram-telegram) which you could perform on your local machine or from within a docker container.
 ```
-cat telegram.ini
+cat ~/.config/ntfy/telegram.ini
 [telegram]
-token = ############
-chat_id = ####
+token = FOO
+chat_id = BAR
 ```
 
 ## run
 
-```docker run --rm -v ${PWD}/telegram.ini:/root/.config/ntfy/telegram.ini visibilityspots/domain-watcher:latest visibilityspots.org```
+```docker run --rm -e TELEGRAM_TOKEN=FOO -e TELEGRAM_CHAT_ID=BAR visibilityspots/domain-watcher:latest visibilityspots.org```
 
 ## test
 
 I wrote some tests in a goss.yaml file which can be executed by [dgoss](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss)
 
 ```
-$ dgoss run --name domain-watcher --rm -ti visibilityspots/domain-watcher:latest /bin/bash
 INFO: Starting docker container
-INFO: Container ID: 41c35114
+INFO: Container ID: 409d41a7
 INFO: Sleeping for 0.2
 INFO: Running Tests
+File: /home/watcher/.config/ntfy/telegram.ini: exists: matches expectation: [true]
+File: /home/watcher/.config/ntfy/telegram.ini: owner: matches expectation: ["watcher"]
+File: /home/watcher/.config/ntfy/telegram.ini: group: matches expectation: ["watcher"]
+User: watcher: exists: matches expectation: [true]
+User: watcher: home: matches expectation: ["/home/watcher"]
 Command: whois --version: exit-status: matches expectation: [0]
 Package: whois: installed: matches expectation: [true]
 
 
-Total Duration: 0.009s
-Count: 2, Failed: 0, Skipped: 0
+Total Duration: 0.012s
+Count: 7, Failed: 0, Skipped: 0
 INFO: Deleting container
 ```
 
 ## License
-Distributed under the MIT license
+Distributed under the [MIT](https://opensource.org/licenses/MIT) license
