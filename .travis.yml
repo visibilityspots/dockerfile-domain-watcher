@@ -5,7 +5,7 @@ before_install:
 - curl -L https://goss.rocks/install | sudo sh
 - docker build -t visibilityspots/domain-watcher .
 script:
-- dgoss run --name domain-watcher --rm -ti visibilityspots/domain-watcher:latest /bin/bash
+- dgoss run --name domain-watcher --rm -ti visibilityspots/domain-watcher:latest bie ba boo foo bar
 after_success:
 - if [ "$TRAVIS_BRANCH" == "master" ]; then docker login -u=visibilityspots -p="$DOCKER_PASSWORD";
   docker push visibilityspots/domain-watcher; fi
