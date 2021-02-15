@@ -1,9 +1,9 @@
 # DomainWatcher
 
 [![Build Status](https://travis-ci.org/visibilityspots/dockerfile-domain-watcher.svg?branch=master)](https://travis-ci.org/visibilityspots/dockerfile-domain-watcher)
-[![](https://images.microbadger.com/badges/image/visibilityspots/domain-watcher.svg)](https://microbadger.com/images/visibilityspots/domain-watcher)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/visibilityspots/domain-watcher/latest)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/visibilityspots/domain-watcher.svg)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 a docker container which checks if a given domain is still available and sends a message through [telegram](https://telegram.org/) using [ntfy](https://ntfy.readthedocs.io/en/latest/)
 
