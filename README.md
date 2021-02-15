@@ -1,6 +1,6 @@
 # DomainWatcher
 
-[![Build Status](https://travis-ci.org/visibilityspots/dockerfile-domain-watcher.svg?branch=master)](https://travis-ci.org/visibilityspots/dockerfile-domain-watcher)
+[![Build Status](https://github.com/visibilityspots/dockerfile-domain-watcher/workflows/CI/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/visibilityspots/domain-watcher/latest)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/visibilityspots/domain-watcher.svg)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
