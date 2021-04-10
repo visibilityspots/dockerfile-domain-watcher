@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
   push:
@@ -36,3 +36,6 @@ jobs:
           push: true
           tags: |
             visibilityspots/domain-watcher:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}

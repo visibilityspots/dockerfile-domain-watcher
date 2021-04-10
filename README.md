@@ -1,9 +1,10 @@
 # DomainWatcher
 
-[![Build Status](https://github.com/visibilityspots/dockerfile-domain-watcher/workflows/CI/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions)
-[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/visibilityspots/domain-watcher/latest)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/visibilityspots/domain-watcher.svg)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+[![build status](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/main.yaml/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/main.yaml)
+[![docker image size](https://img.shields.io/docker/image-size/visibilityspots/domain-watcher/latest)](https://hub.docker.com/r/visibilityspots/domain-watcher)
+[![docker pulls](https://img.shields.io/docker/pulls/visibilityspots/domain-watcher.svg)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 a docker container which checks if a given domain is still available and sends a message through [telegram](https://telegram.org/) using [ntfy](https://ntfy.readthedocs.io/en/latest/)
 
