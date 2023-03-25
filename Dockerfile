@@ -1,11 +1,10 @@
-FROM python:3.9.1-slim
+FROM python:3.9.16-slim
 
-LABEL maintainer="Jan Collijs"
-
-RUN pip install --no-cache ntfy[telegram]; \
-    apt-get update; \
-    apt-get install -y whois; \
-    adduser watcher; \
+RUN apt-get update; \
+    pip install --no-cache ntfy[telegram]==2.7.0; \
+    pip install --no-cache --force-reinstall -v "python-telegram-bot==13.5"; \
+    apt-get install -y whois=5.5.10; \
+    adduser --system watcher; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 

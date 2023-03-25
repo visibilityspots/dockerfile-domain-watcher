@@ -3,11 +3,19 @@ package:
     installed: true
 
 command:
-  ntfy --version:
+  whois --version:
+    stdout:
+    - Version 5.5.10.
     exit-status: 0
 
-command:
-  whois --version:
+  ntfy --version:
+    stdout:
+    - 2.7.0
+    exit-status: 0
+
+  pip --disable-pip-version-check list | grep -i python-telegram-bot | awk '{ print $2 }':
+    stdout:
+    - 13.5
     exit-status: 0
 
 user:
@@ -19,4 +27,4 @@ file:
   /home/watcher/.config/ntfy/telegram.ini:
     exists: true
     owner: watcher
-    group: watcher
+    group: nogroup
