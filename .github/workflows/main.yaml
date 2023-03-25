@@ -1,14 +1,29 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches: [ master ]
-  workflow_dispatch:
-  schedule:
-  - cron: "0 8 * * 1"
+    tags:
+      - '*'
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t visibilityspots/domain-watcher:dev .
+
+      - name: Install Goss
+        uses: e1himself/goss-installation-action@v1.1.0
+        with:
+          version: 'v0.3.20'
+
+      - name: Execute Goss tests
+        run: dgoss run visibilityspots/domain-watcher:dev domain.org
+
   buildx:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,6 +51,10 @@ jobs:
           push: true
           tags: |
             visibilityspots/domain-watcher:latest
+            visibilityspots/domain-watcher:${{ github.ref_name }}
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Create github release
+        uses: ncipollo/release-action@v1
+        with:
+          makeLatest: true
+
