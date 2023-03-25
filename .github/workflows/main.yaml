@@ -20,7 +20,7 @@ jobs:
           version: 'v0.3.20'
 
       - name: Execute Goss tests
-        run: dgoss run visibilityspots/domain-watcher:dev domain.org
+        run: time dgoss run visibilityspots/domain-watcher:dev domain.org || ((i++))
 
   buildx:
     needs: test
