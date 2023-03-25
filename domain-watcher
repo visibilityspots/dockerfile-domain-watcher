@@ -13,8 +13,8 @@ echo "chat_id = ${TELEGRAM_CHAT_ID}" >> /home/watcher/.config/ntfy/telegram.ini
 for domain in $@; do
     state=$(whois $domain | grep Status |  tr -d '\t' | tr ':' '\n' | tail -n +2 | sed "s/^ //")
     if [ "$state" == "NOT AVAILABLE" ]; then
-        /usr/local/bin/ntfy -b telegram send "$domain is still not available"
+        ntfy -b telegram send "$domain is still not available"
     else
-        /usr/local/bin/ntfy -b telegram send "$domain state is $state"
+        ntfy -b telegram send "$domain state is $state"
     fi
 done
