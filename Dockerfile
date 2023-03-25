@@ -1,4 +1,4 @@
-FROM python:3.9.16-slim
+FROM python:3.11.2-slim
 
 RUN apt-get update; \
     pip install --no-cache ntfy[telegram]==2.7.0; \
