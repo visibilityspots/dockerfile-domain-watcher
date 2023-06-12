@@ -1,4 +1,4 @@
-FROM python:3.9.16-slim
+FROM python:3.11.4-slim
 
 RUN apt-get update; \
     apt-get install -y whois=5.5.10 gcc; \
