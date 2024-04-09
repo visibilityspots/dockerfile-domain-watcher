@@ -22,7 +22,7 @@ jobs:
       - name: Execute Goss tests
         env:
           GOSS_FILES_STRATEGY: cp
-        run: dgoss run visibilityspots/domain-watcher:dev
+        run: dgoss run --entrypoint='' visibilityspots/domain-watcher:dev sleep 5
 
   deploy:
     needs: test
