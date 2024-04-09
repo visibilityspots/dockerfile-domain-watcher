@@ -1,30 +1,6 @@
-package:
-  whois:
-    installed: true
-
 command:
-  whois --version:
-    stdout:
-    - Version 5.5.10.
+  whois visibilityspots.org:
     exit-status: 0
 
-  ntfy --version:
-    stdout:
-    - 2.7.0
+  domain-watcher:
     exit-status: 0
-
-  pip --disable-pip-version-check list | grep -i python-telegram-bot | awk '{ print $2 }':
-    stdout:
-    - 13.5
-    exit-status: 0
-
-user:
-  watcher:
-    exists: true
-    home: /home/watcher
-
-file:
-  /home/watcher/.config/ntfy/telegram.ini:
-    exists: true
-    owner: watcher
-    group: nogroup

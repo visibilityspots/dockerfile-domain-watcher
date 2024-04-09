@@ -1,20 +1,19 @@
-#!/bin/bash
+#!/bin/sh
 #
-# little script using whois to determine an array of given domains if it became available and alerts to telegram using ntfy
+# little script using whois to determine an array of given domains if it became available and alerts to gotify
 
-# create telegram configuration based on ENV parameters
-mkdir -p /home/watcher/.config/ntfy
+echo "{" >> /home/gotify/cli.json
+echo "  \"token\": \"${GOTIFY_TOKEN}\"," >> /home/gotify/cli.json
+echo "  \"url\": \"${GOTIFY_URL}\"," >> /home/gotify/cli.json
+echo "  \"defaultPriority\": 0" >> /home/gotify/cli.json
+echo "}" >> /home/gotify/cli.json
 
-echo '[telegram]' > /home/watcher/.config/ntfy/telegram.ini
-echo "token = ${TELEGRAM_TOKEN}" >> /home/watcher/.config/ntfy/telegram.ini
-echo "chat_id = ${TELEGRAM_CHAT_ID}" >> /home/watcher/.config/ntfy/telegram.ini
-
-# loop through given URLs, check and ntfy using telegram about the state
+# loop through given URLs, check and sent notification using gotify-cli about the state
 for domain in $@; do
     state=$(whois $domain | grep Status |  tr -d '\t' | tr ':' '\n' | tail -n +2 | sed "s/^ //")
     if [ "$state" == "NOT AVAILABLE" ]; then
-        ntfy -b telegram send "$domain is still not available"
+        gotify push -t "DOMAIN-WATCHER" -p 0 "$domain is still not available"
     else
-        ntfy -b telegram send "$domain state is $state"
+        gotify push -t "DOMAIN-WATCHER" -p 10 "$domain is still not available"
     fi
 done

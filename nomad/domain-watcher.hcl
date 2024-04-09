@@ -20,8 +20,8 @@ job "domain-watcher" {
 
     task "domain-watcher" {
       env {
-        TELEGRAM_TOKEN = "FOO"
-        TELEGRAM_CHAT_ID = "BAR"
+        GOTIFY_TOKEN = "FOO"
+        GOTIFY_URL = "BAR"
       }
 
       driver = "docker"
