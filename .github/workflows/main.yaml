@@ -22,7 +22,7 @@ jobs:
       - name: Execute Goss tests
         env:
           GOSS_FILES_STRATEGY: cp
-        run: dgoss run --entrypoint='' visibilityspots/domain-watcher:dev sleep 5
+        run: dgoss run -e GOTIFY_URL=${{ secrets.GOTIFY_URL }} -e GOTIFY_TOKEN=${{ secrets.GOTIFY_TOKEN }} visibilityspots/domain-watcher:dev visibilityspots.org
 
   deploy:
     needs: test

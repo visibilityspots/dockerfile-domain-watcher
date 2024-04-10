@@ -40,9 +40,9 @@ $ docker build -t visibilityspots/domain-watcher:dev .
 I wrote some tests in a goss.yaml file which can be executed by [dgoss](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss)
 
 ```
-$ dgoss run --entrypoint='' visibilityspots/domain-watcher:dev sleep 5                                                                                ✔ 
+$ dgoss run -e GOTIFY_URL=FOO -e GOTIFY_TOKEN=BAR visibilityspots/domain-watcher:dev visibilityspots.org
 INFO: Starting docker container
-INFO: Container ID: 71c3d5cb
+INFO: Container ID: 61bd26b7
 INFO: Sleeping for 0.2
 INFO: Container health
 INFO: Running Tests
@@ -50,10 +50,31 @@ Command: domain-watcher: exit-status: matches expectation: [0]
 Command: whois visibilityspots.org: exit-status: matches expectation: [0]
 
 
-Total Duration: 0.633s
+Total Duration: 1.020s
 Count: 2, Failed: 0, Skipped: 0
 INFO: Deleting container
 
+```
+
+### act
+
+using [act](https://github.com/nektos/act#overview----) for local testing of the written github actions makes my life and commit history a lot easier;
+
+```
+$ act -l
+Stage  Job ID  Job name  Workflow name           Workflow file               Events
+0      update  update    docker-hub-description  docker-hub-description.yml  push
+0      test    test      CI                      main.yaml                   push
+0      scan    scan      trivy                   trivy.yml                   push,pull_request,schedule
+1      deploy  deploy    CI                      main.yaml                   push
+
+$ act -j test
+[CI/test] 🚀  Start image=catthehacker/ubuntu:act-latest
+.
+.
+.
+[CI/test]   ✅  Success - Main Execute Goss tests
+[CI/test] 🏁  Job succeeded
 ```
 
 ## License
