@@ -32,7 +32,7 @@ jobs:
           docker build -t visibilityspots/domain-watcher:dev .
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.19.0
+        uses: aquasecurity/trivy-action@0.20.0
         with:
           image-ref: 'visibilityspots/domain-watcher:dev'
           format: 'sarif'
