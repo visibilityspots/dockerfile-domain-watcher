@@ -1,18 +1,9 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: trivy
 
 on:
   push:
-    branches: [ "master" ]
     tags:
       - '*'
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "master" ]
   schedule:
     - cron: '44 19 * * 4'
 
@@ -32,6 +23,15 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build -t visibilityspots/domain-watcher:dev .
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: 'visibilityspots/domain-watcher:dev'
+          format: 'table'
+          exit-code: 0
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.24.0
