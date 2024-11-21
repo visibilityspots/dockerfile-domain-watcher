@@ -3,7 +3,7 @@
 
 [![trivy](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/trivy.yml/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/trivy.yml)
 [![docker-hub-description](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/docker-hub-description.yml/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/docker-hub-description.yml)
-[![build status](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/main.yaml/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/main.yaml)
+[![build status](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/main.yml/badge.svg)](https://github.com/visibilityspots/dockerfile-domain-watcher/actions/workflows/main.yml)
 [![gitHub release](https://img.shields.io/github/v/release/visibilityspots/dockerfile-domain-watcher)](https://github.com/visibilityspots/dockerfile-domain-watcher/releases)
 [![docker image size](https://img.shields.io/docker/image-size/visibilityspots/domain-watcher/latest)](https://hub.docker.com/r/visibilityspots/domain-watcher)
 [![docker pulls](https://img.shields.io/docker/pulls/visibilityspots/domain-watcher.svg)](https://hub.docker.com/r/visibilityspots/domain-watcher/)
