@@ -76,6 +76,5 @@ $ act -j test
 [CI/test]   ✅  Success - Main Execute Goss tests
 [CI/test] 🏁  Job succeeded
 ```
-
 ## License
 Distributed under the [MIT](https://opensource.org/licenses/MIT) license
