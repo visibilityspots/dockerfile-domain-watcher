@@ -1,6 +1,115 @@
+file:
+  /usr/local/bin/domain-watcher:
+    exists: true
+    filetype: file
+    mode: "0755"
+
 command:
-  whois visibilityspots.org:
+  whois is installed:
+    exec: command -v whois
     exit-status: 0
 
-  domain-watcher:
+  gotify is installed:
+    exec: command -v gotify
     exit-status: 0
+
+  without arguments it reports usage:
+    exec: domain-watcher
+    exit-status: 1
+    stderr:
+      - "usage: domain-watcher"
+
+  without gotify credentials it refuses to run:
+    exec: domain-watcher example.be
+    exit-status: 1
+    stderr:
+      - "GOTIFY_URL and GOTIFY_TOKEN must both be set"
+
+  # the checks below stub whois and gotify so the parsing is verified
+  # deterministically, without depending on a live registry
+
+  a taken domain is reported as taken:
+    exec: |
+      mkdir -p /tmp/taken
+      cat > /tmp/taken/whois <<'EOF'
+      #!/bin/sh
+      printf 'Status:\tNOT AVAILABLE\n'
+      EOF
+      cat > /tmp/taken/gotify <<'EOF'
+      #!/bin/sh
+      echo "$@"
+      EOF
+      chmod +x /tmp/taken/whois /tmp/taken/gotify
+      PATH=/tmp/taken:$PATH GOTIFY_URL=http://gotify.invalid GOTIFY_TOKEN=stub domain-watcher example.be
+    exit-status: 0
+    stdout:
+      - "-p 0 example.be is still not available"
+
+  a free domain is reported as available:
+    exec: |
+      mkdir -p /tmp/free
+      cat > /tmp/free/whois <<'EOF'
+      #!/bin/sh
+      printf 'Status:\tAVAILABLE\n'
+      EOF
+      cat > /tmp/free/gotify <<'EOF'
+      #!/bin/sh
+      echo "$@"
+      EOF
+      chmod +x /tmp/free/whois /tmp/free/gotify
+      PATH=/tmp/free:$PATH GOTIFY_URL=http://gotify.invalid GOTIFY_TOKEN=stub domain-watcher example.be
+    exit-status: 0
+    stdout:
+      - "-p 10 example.be is available"
+
+  a gTLD status line is not mistaken for availability:
+    exec: |
+      mkdir -p /tmp/gtld
+      cat > /tmp/gtld/whois <<'EOF'
+      #!/bin/sh
+      echo 'Domain Status: clientTransferProhibited https://icann.org/epp#clientTransferProhibited'
+      echo 'Registrar: Example Registrar Inc.'
+      EOF
+      cat > /tmp/gtld/gotify <<'EOF'
+      #!/bin/sh
+      echo "$@"
+      EOF
+      chmod +x /tmp/gtld/whois /tmp/gtld/gotify
+      PATH=/tmp/gtld:$PATH GOTIFY_URL=http://gotify.invalid GOTIFY_TOKEN=stub domain-watcher example.org
+    exit-status: 0
+    stdout:
+      - "-p 0 example.org is still not available"
+
+  unreadable whois output is reported as unknown:
+    exec: |
+      mkdir -p /tmp/unknown
+      cat > /tmp/unknown/whois <<'EOF'
+      #!/bin/sh
+      echo 'the registry is having a bad day'
+      EOF
+      cat > /tmp/unknown/gotify <<'EOF'
+      #!/bin/sh
+      echo "$@"
+      EOF
+      chmod +x /tmp/unknown/whois /tmp/unknown/gotify
+      PATH=/tmp/unknown:$PATH GOTIFY_URL=http://gotify.invalid GOTIFY_TOKEN=stub domain-watcher example.be
+    exit-status: 1
+    stdout:
+      - "could not determine the status of example.be"
+
+  every given domain is checked:
+    exec: |
+      mkdir -p /tmp/multi
+      cat > /tmp/multi/whois <<'EOF'
+      #!/bin/sh
+      printf 'Status:\tNOT AVAILABLE\n'
+      EOF
+      cat > /tmp/multi/gotify <<'EOF'
+      #!/bin/sh
+      echo "$@"
+      EOF
+      chmod +x /tmp/multi/whois /tmp/multi/gotify
+      PATH=/tmp/multi:$PATH GOTIFY_URL=http://gotify.invalid GOTIFY_TOKEN=stub domain-watcher one.be two.be | wc -l
+    exit-status: 0
+    stdout:
+      - "2"

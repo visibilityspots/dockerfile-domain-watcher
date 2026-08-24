@@ -7,6 +7,10 @@ on:
 jobs:
   main:
     uses: visibilityspots/github-workflows/.github/workflows/main.yml@main
+    with:
+      # the entrypoint is a one-shot batch script that exits within a second,
+      # leaving nothing for goss to exec into -- keep the container alive instead
+      run_args: '--entrypoint sleep'
+      goss_cmd: '60'
     secrets:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      GOSS_CMD: ${{ secrets.GOSS_CMD }}
