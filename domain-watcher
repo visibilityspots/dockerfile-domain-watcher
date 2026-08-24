@@ -1,19 +1,73 @@
 #!/bin/sh
 #
-# little script using whois to determine an array of given domains if it became available and alerts to gotify
+# little script using whois to determine for an array of given domains whether they
+# became available and alerts to gotify
 
-echo "{" >> /home/gotify/cli.json
-echo "  \"token\": \"${GOTIFY_TOKEN}\"," >> /home/gotify/cli.json
-echo "  \"url\": \"${GOTIFY_URL}\"," >> /home/gotify/cli.json
-echo "  \"defaultPriority\": 0" >> /home/gotify/cli.json
-echo "}" >> /home/gotify/cli.json
+set -u
 
-# loop through given URLs, check and sent notification using gotify-cli about the state
-for domain in $@; do
-    state=$(whois $domain | grep Status |  tr -d '\t' | tr ':' '\n' | tail -n +2 | sed "s/^ //")
-    if [ "$state" == "NOT AVAILABLE" ]; then
-        gotify push -t "DOMAIN-WATCHER" -p 0 "$domain is still not available"
-    else
-        gotify push -t "DOMAIN-WATCHER" -p 10 "$domain is still not available"
+CONFIG=/home/gotify/cli.json
+TITLE=DOMAIN-WATCHER
+
+if [ $# -eq 0 ]; then
+    echo "usage: domain-watcher <domain> [domain ...]" >&2
+    exit 1
+fi
+
+if [ -z "${GOTIFY_URL:-}" ] || [ -z "${GOTIFY_TOKEN:-}" ]; then
+    echo "domain-watcher: GOTIFY_URL and GOTIFY_TOKEN must both be set" >&2
+    exit 1
+fi
+
+cat > "$CONFIG" <<EOF
+{
+  "token": "${GOTIFY_TOKEN}",
+  "url": "${GOTIFY_URL}",
+  "defaultPriority": 0
+}
+EOF
+
+# determine whether a domain is taken, free or undeterminable.
+# anything we cannot read with confidence is reported as unknown -- never as free,
+# so a whois hiccup can not raise a false alarm.
+domain_state() {
+    out=$(whois "$1" 2>/dev/null)
+
+    # DNS Belgium (.be) answers with an explicit availability status
+    case "$(printf '%s\n' "$out" | sed -n 's/^Status:[[:space:]]*//p' | head -n 1)" in
+        'NOT AVAILABLE') echo taken ; return ;;
+        'AVAILABLE')     echo free  ; return ;;
+    esac
+
+    # most other registries answer with a not-found line when the domain is free
+    if printf '%s\n' "$out" | grep -qiE '^[[:space:]]*(No match|NOT FOUND|No Data Found|Domain not found)'; then
+        echo free ; return
     fi
+
+    # a registered domain always carries a registrar or a creation date
+    if printf '%s\n' "$out" | grep -qiE '^[[:space:]]*(Registrar|Creation Date|Registered):'; then
+        echo taken ; return
+    fi
+
+    echo unknown
+}
+
+rc=0
+
+# loop through the given domains, check and send a notification about the state
+for domain in "$@"; do
+    case "$(domain_state "$domain")" in
+        taken)
+            gotify push -t "$TITLE" -p 0 "$domain is still not available" || rc=1
+            ;;
+        free)
+            gotify push -t "$TITLE" -p 10 "$domain is available" || rc=1
+            ;;
+        unknown)
+            echo "domain-watcher: could not determine the status of $domain" >&2
+            gotify push -t "$TITLE" -p 5 "could not determine the status of $domain" || rc=1
+            rc=1
+            ;;
+    esac
 done
+
+exit $rc
