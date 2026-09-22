@@ -1,15 +1,19 @@
 job "domain-watcher" {
-  region = "global"
-  datacenters = [""]
-  type = "batch"
+  region      = "global"
+  datacenters = ["garage"]
+  namespace   = "services"
+  type        = "batch"
 
-  "periodic {
-    cron      = "@daily"
+  periodic {
+    crons     = ["35 12 * * *"]
     time_zone = "Europe/Brussels"
   }
 
   group "domain-watcher" {
-    count = 1
+    vault {
+      # token renewal must not bounce the task; secrets arrive via template
+      change_mode = "noop"
+    }
 
     restart {
       attempts = 1
@@ -19,42 +23,41 @@ job "domain-watcher" {
     }
 
     task "domain-watcher" {
-      env {
-        GOTIFY_TOKEN = "FOO"
-        GOTIFY_URL = "BAR"
+      template {
+        # the token comes from Vault, GOTIFY_URL from the Consul KV prefix
+        data = <<EOH
+TZ = "Europe/Brussels"
+GOTIFY_TOKEN = "{{with secret "kv/data/services/domain-watcher"}}{{.Data.data.gotify_token}}{{end}}"
+{{range ls "services/domain-watcher"}}
+{{.Key}}={{.Value}}
+{{end}}
+EOH
+
+        destination = "local/env"
+        env         = true
       }
 
-      driver = "docker"
+      driver = "podman"
 
       config {
-        image = "visibilityspots/domain-watcher:latest"
-        force_pull = true
-        args = [
-            "DOMAINS",
-            "TO",
-            "WATCH"
-        ]
-        logging {
-          type = "journald"
-          config {
-            tag = "DOMAIN-WATCHER"
-          }
-        }
-      }
+        image = "visibilityspots/domain-watcher:v2026.9.0"
 
-      service {
-        name = "domain-watcher"
-        tags = [
-          "domain-watcher"
+        # every domain to watch is one argument
+        args = [
+          "example.be",
         ]
+
+        logging {
+          driver = "journald"
+          options = [{
+            tag = "DOMAIN-WATCHER"
+          }]
+        }
       }
 
       resources {
         memory = 50
-        cpu = 100
-        network {
-          mbits = 1
-        }
+        cpu    = 100
       }
     }
   }
