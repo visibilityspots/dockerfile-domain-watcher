@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2026.10.0] - 2026-10-08
+### :bug: Bug Fixes
+- [`1411c56`](https://github.com/visibilityspots/dockerfile-domain-watcher/commit/1411c5606baf7887b656d245d8b244e1956c2d94) - **docker**: rebase on gotify-cli v2.4.2 *(commit by [@visibilityspots](https://github.com/visibilityspots))*
+
+### :wrench: Chores
+- [`51db54b`](https://github.com/visibilityspots/dockerfile-domain-watcher/commit/51db54bf57e81dd9485b5f806bc1747142f624fa) - **nomad**: sync the example job spec with the deployed job *(commit by [@visibilityspots](https://github.com/visibilityspots))*
+
+
 ## [v2026.9.0] - 2026-09-22
 ### :bug: Bug Fixes
 - [`57b64ca`](https://github.com/visibilityspots/dockerfile-domain-watcher/commit/57b64ca59851e45cf5beacaeaf261b3a3f9568d7) - **domain-watcher**: report availability correctly and never guess *(commit by [@visibilityspots](https://github.com/visibilityspots))*
@@ -25,3 +33,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [v2024.10.0]: https://github.com/visibilityspots/dockerfile-domain-watcher/compare/v2024.8.0...v2024.10.0
 [v2026.9.0]: https://github.com/visibilityspots/dockerfile-domain-watcher/compare/v2025.8.0...v2026.9.0
+[v2026.10.0]: https://github.com/visibilityspots/dockerfile-domain-watcher/compare/v2026.9.0...v2026.10.0
