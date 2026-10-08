@@ -1,4 +1,4 @@
-FROM visibilityspots/gotify-cli:v2.4.1
+FROM visibilityspots/gotify-cli:v2.4.2
 
 # the base image drops to the unprivileged gotify user; apk needs root
 USER root
