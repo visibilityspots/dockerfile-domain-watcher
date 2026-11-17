@@ -1,9 +1,10 @@
-FROM visibilityspots/gotify-cli:v2.4.3
+FROM visibilityspots/gotify-cli:v2.4.4
 
 # the base image drops to the unprivileged gotify user; apk needs root
 USER root
 
-RUN apk add --no-cache whois
+# apk upgrade: pick up Alpine security fixes the base image does not have yet
+RUN apk upgrade --no-cache && apk add --no-cache whois
 
 COPY domain-watcher /usr/local/bin/domain-watcher
 
